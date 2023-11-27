@@ -226,3 +226,4 @@ class Art:
         rows = CURSOR.execute(sql, (gallery[id],))
         return [cls.instance_from_db(row) for row in rows] if rows else None
     
+  

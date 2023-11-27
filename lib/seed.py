@@ -23,3 +23,13 @@
 
 # seed_database()
 # print("Seeded database")
+
+
+# Art.create(title, artist, price, year_created, admin_acquisition, preview)
+# title should be a not empty string 
+# artist should be a not empty string 
+# price should be a int or float with .00 at end
+# year created should be an int
+# admin aquisition should 1
+# preview to string "./path to photo" 
+
