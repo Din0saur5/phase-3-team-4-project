@@ -171,11 +171,11 @@ class Art:
             art = cls(row[1], row[2], row[3],row[4],row[5],row[6],row[7],row[8])
             art.id = row[0]
             cls.all[art.id] = art
-        return art
+        return art #returns an object
 
     @classmethod
     def get_all(cls):
-        """Return a list containing a art object per row in the table"""
+        """Return a list containing an art object per row in the table"""
         sql = """
             SELECT *
             FROM art
@@ -183,7 +183,7 @@ class Art:
 
         rows = CURSOR.execute(sql).fetchall()
 
-        return [cls.instance_from_db(row) for row in rows]
+        return [cls.instance_from_db(row) for row in rows] #returns a list of onjects
     
     @classmethod
     def search_by(cls, column, query):
@@ -198,7 +198,7 @@ class Art:
             WHERE {column} = ?
         """
 
-        rows = CURSOR.execute(sql, (query,))
+        rows = CURSOR.execute(sql, (query,)) #returns a list of tuples
         return [cls.instance_from_db(row) for row in rows] if rows else None
     
     @classmethod

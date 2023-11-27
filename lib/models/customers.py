@@ -1,7 +1,7 @@
 #this is where we will put the customer class
 #models should focus on database crud actions 
 from models.__init__ import CURSOR, CONN
-
+from models.art import Art
 class Customer:
     all = {}
     
@@ -84,6 +84,10 @@ class Customer:
         self.id = CURSOR.lastrowid
         type(self).all[self.id] = self
 
+    
+    def aquisitions(self):
+        list = Art.search_by("owner", self.id)
+        return list
     
     @classmethod
     def create(cls, username, password):

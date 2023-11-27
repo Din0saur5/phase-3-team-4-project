@@ -64,20 +64,23 @@ def search_by_date():
 def search_by_date_range():
     pass
 
-def search_by_admin():
+def search_by_admin_id():
     pass
 
 def search_by_preview():
     pass
 
-def search_by_owner():
+def search_by_owner_id():
     pass
 
+def search_by_id():
+    pass
 
 #CUSTOMER ONLY INTERFACE FNS
  
 def register_cust(username, password):
-    return True        #checks params and raises exceptions as needed and returns either true or false
+    return True
+            
 
 def cust_login():
     pass #checks params and raises exceptions as needed and returns either true or false
@@ -110,13 +113,14 @@ def remove_art():
 
 
 #CUSTOMER ONLY OPTIONS
-def purchase_art():
-    pass
+def purchase_art(customer, artpiece):
+    artpiece.owner = customer.id
+    artpiece.update()
 
 def sell_art(artpiece):
     artpiece.price = round(artpiece.price*1.2, 2)
     donate_art(artpiece)
     
 def donate_art(artpiece):
-    artpiece.owner = gallery
+    artpiece.owner = 0 #customer id of gallery 
     artpiece.update()
