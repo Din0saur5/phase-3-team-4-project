@@ -130,3 +130,14 @@ class Admin:
 
         return [cls.instance_from_db(row) for row in rows]
     
+    @classmethod
+    def find_by_id(cls, id):
+        """Return Admin object corresponding to the table row matching the specified primary key"""
+        sql = """
+            SELECT *
+            FROM admins
+            WHERE id = ?
+        """
+
+        row = CURSOR.execute(sql, (id,)).fetchone()
+        return cls.instance_from_db(row) if row else None 

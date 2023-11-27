@@ -80,7 +80,7 @@ class Art:
     @admin_acquisition.setter
     def admin_acquisition(self, value):
         from models.admins import Admin
-        if not isinstance(value, Admin) and not hasattr(self, "admin_acquisition"):
+        if not isinstance(value, int) and not hasattr(self, "admin_acquisition") and Admin.find_by_id(value):
             raise Exception("Admin acquisition must be an instance of the Admin class")
         else:
             self._admin_acquisition = value  
@@ -91,7 +91,7 @@ class Art:
     @owner.setter
     def owner(self, owner):
         from models.customers import Customer
-        if isinstance(owner, (Customer, None)):
+        if isinstance(owner, (int, None)) and Customer.find_by_id(owner):
             self._owner = owner
         else:
             raise Exception('error setting owner')    
@@ -124,7 +124,7 @@ class Art:
             SET   price = ?, owner = ?,  
             WHERE id = ?
         """
-        CURSOR.execute(sql, (self.price, self.owner[id], self.id))
+        CURSOR.execute(sql, (self.price, self.owner, self.id))
         CONN.commit()
     
    
@@ -138,7 +138,7 @@ class Art:
             VALUES (?, ?, ?, ?, ?, ?, ?)
         """
 
-        CURSOR.execute(sql, (self.title, self.artist, self.price, self.year_created, self.admin_acquisition[id], self.preview, self.owner[id]))
+        CURSOR.execute(sql, (self.title, self.artist, self.price, self.year_created, self.admin_acquisition, self.preview, self.owner))
         CONN.commit()
 
         self.id = CURSOR.lastrowid
@@ -226,4 +226,14 @@ class Art:
         rows = CURSOR.execute(sql, (gallery[id],))
         return [cls.instance_from_db(row) for row in rows] if rows else None
     
-  
+    @classmethod
+    def find_by_id(cls, id):
+        """Return Art object corresponding to the table row matching the specified primary key"""
+        sql = """
+            SELECT *
+            FROM art
+            WHERE id = ?
+        """
+
+        row = CURSOR.execute(sql, (id,)).fetchone()
+        return cls.instance_from_db(row) if row else None   

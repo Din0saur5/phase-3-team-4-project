@@ -2,7 +2,9 @@
 #
 #for example exiting the program or going back to the previous menu 
 
-from models.customers import gallery
+from models.customers import gallery, Customer
+from models.admins import Admin
+from models.art import Art
 
 
 def exit_program():
