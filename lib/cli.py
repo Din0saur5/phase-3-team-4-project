@@ -1,10 +1,10 @@
 from helpers import *
 import os
 
-#the cli is the main program this is what we run to start it up, all user interface takes place here 
+#the cli is the main program this is what we run to start it up, all user interface takes place here
 
 def main():
-    i =0 
+    i =0
     while True:
         os.system('cls' if os.name == 'nt' else 'clear')
         if i>0:
@@ -37,23 +37,23 @@ def login(choice):
             main()
         elif user:
             password = input("password: ")
-            if choice == "1":               
+            if choice == "1":
                 verify = register_cust(user, password)
-            elif choice == "2":  
+            elif choice == "2":
                 verify = cust_login(user, password)
             else:
                 verify = admin_login(user, password)
-        if isinstance(verify, Customer) or isinstance(verify, Admin):             
-            dashboard(verify)  
+        if isinstance(verify, Customer) or isinstance(verify, Admin):
+            dashboard(verify)
         else:
             i+=1
 
 def dashboard(user):
-    i = 0 
+    i = 0
     while True:
         os.system('cls' if os.name == 'nt' else 'clear')
         print("-- q) exit ||m) log out || 0) back --")
-        print(f"Welcome {user.username}!\n")  
+        print(f"Welcome {user.username}!\n")
         if i>0:
             print("!!Invalid choice!!")
         if isinstance(user, Customer):
@@ -70,7 +70,7 @@ def dashboard(user):
                 gallery_search(user)
             elif choice == "2":
                 account_settings(user)
-            
+
             else:
                 i+=1
         elif isinstance(user, Admin):
@@ -84,14 +84,14 @@ def dashboard(user):
             elif choice == "0":
                 login("admin")
             elif choice == "1":
-                pass
+                admin_menu(user)
             elif choice == "2":
                 pass
             elif choice == "3":
-                pass 
-            
-            
-            
+                all_customers(user)
+
+
+
 def customer_cmd():
     print("Please select an option:")
     print("1. View galleries")
@@ -103,16 +103,16 @@ def admin_cmd():
     print("1. Admin controls/account")
     print("2. Art library")
     print("3. Customer list")
-    
+
 def account_settings( user):
-    i = 0 
+    i = 0
     while True:
-        
+
         print("-- q) exit ||m) log out || 0) back --")
         if i>0:
             print("!!Invalid choice!!")
         print("Settings")
-        print("1. change username") 
+        print("1. change username")
         print("2. change password")
         print("3. delete account")
         choice = input("> ")
@@ -130,15 +130,15 @@ def account_settings( user):
             remove_user(user)
         else:
             i+=1
-            
+
 def main_menu():
     print("-- q) exit --")
     print("Please select an option:")
     print("1. Register new customer")
     print("2. Login")
-  
+
 def gallery_search(user):
-   
+
         if isinstance(user, Customer):
             customer_galleries()
             choice = input("> ")
@@ -157,7 +157,7 @@ def gallery_search(user):
                 search_as_cust()
             else:
                 i+=1
-                
+
         elif isinstance(user, Admin):
             admin_galleries()
             choice = input("> ")
@@ -173,7 +173,7 @@ def gallery_search(user):
             elif choice == "2":
                 pass
             elif choice == "3":
-                pass 
+                pass
 
 def customer_galleries():
     print("Please select an option:")
@@ -181,7 +181,7 @@ def customer_galleries():
     print("2. view complete library")
     print("3. search library by")
     print("4. list of all artists names")
-    
+
 def admin_galleries():
     print("Please select an option:")
     print("1. View personal gallery")
@@ -191,12 +191,35 @@ def admin_galleries():
 
 
 def customer_gallery_menu(user):
-    
+
  pass
 
+def admin_menu(user):
+    i = 0
+    while True:
+        print("-- q) exit ||m) log out || 0) back --")
+        if i>0:
+            print("!!Invalid choice!!")
 
-
-
+        print("Admin Menu")
+        print("1. Account Settings")
+        print("2. Add Admin")
+        print("3. View All Admine")
+        choice = input("> ")
+        if choice == "q":
+            exit_program()
+        elif choice == "m":
+            main()
+        elif choice == "0":
+            dashboard(user)
+        elif choice == "1":
+            change_username(user)
+        elif choice == "2":
+            change_password(user)
+        elif choice == "3":
+            remove_user(user)
+        else:
+            i+=1
 
 if __name__ == '__main__':
     #welcome print interface code

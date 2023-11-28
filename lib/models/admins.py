@@ -1,21 +1,21 @@
 #this is where we will put the admin class
-#models should focus on database crud actions 
+#models should focus on database crud actions
 from models.__init__ import CURSOR, CONN
 from models.art import Art
 
 class Admin:
-    
+
     all = {}
-    
+
     def __init__(self, username, password, id=None):
         self.id = id
         self.username = username
         self.password = password
-        
-    
+
+
     def __repr__(self):
         return f"<Admin: {self.username} || id: {self.id}>"
-#validate username property before setting    
+#validate username property before setting
     @property
     def username(self):
         return self._username
@@ -26,7 +26,7 @@ class Admin:
             self._username = username
         else:
             return
-            
+
     @property
     def password(self):
         return self._password
@@ -37,8 +37,8 @@ class Admin:
             self._password = password
         else:
             return
-            
-    def delete(self):   
+
+    def delete(self):
         """Delete the table row corresponding to the current admin instance,
         delete the dictionary entry, and reassign id attribute"""
 
@@ -55,7 +55,7 @@ class Admin:
 
         # Set the id to None
         self.id = None
-    
+
     def update(self):
         """Update the table row corresponding to the current admin instance."""
         sql = """
@@ -65,15 +65,15 @@ class Admin:
         """
         CURSOR.execute(sql, (self.username, self.password, self.id))
         CONN.commit()
-    
+
     def aquisitions(self):
         list = Art.search_by("admin_acquisition", self.id)
         return list
-    
+
     def create_art(self, title, artist, price, year_created, preview):
         Art.create(title,artist, price, year_created, self.id, preview)
-    
-        
+
+
     def save(self):
         """ Insert a new row with the username and password values of the current Admin instance.
         Update object id attribute using the primary key value of new row.
@@ -89,14 +89,14 @@ class Admin:
         self.id = CURSOR.lastrowid
         type(self).all[self.id] = self
 
-    
+
     @classmethod
     def create(cls, username, password):
         """ Initialize a new Admin instance and save the object to the database """
         admin = cls(username, password)
         admin.save()
         return admin
-    
+
     @classmethod
     def instance_from_db(cls, row):
         """Return a Admin object having the attribute values from the table row."""
@@ -125,7 +125,7 @@ class Admin:
         rows = CURSOR.execute(sql).fetchall()
 
         return [cls.instance_from_db(row) for row in rows]
-    
+
     @classmethod
     def find_by_id(cls, id):
         """Return Admin object corresponding to the table row matching the specified primary key"""
@@ -136,8 +136,8 @@ class Admin:
         """
 
         row = CURSOR.execute(sql, (id,)).fetchone()
-        return cls.instance_from_db(row) if row else None 
-    
+        return cls.instance_from_db(row) if row else None
+
     @classmethod
     def find_by_username(cls, username):
         """Return Admins object corresponding to the table row matching the username"""
@@ -148,5 +148,4 @@ class Admin:
         """
 
         row = CURSOR.execute(sql, (username,)).fetchone()
-        return cls.instance_from_db(row) if row else None 
-        
+        return cls.instance_from_db(row) if row else None

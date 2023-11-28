@@ -1,19 +1,19 @@
 #this is where we will put the customer class
-#models should focus on database crud actions 
+#models should focus on database crud actions
 from models.__init__ import CURSOR, CONN
 from models.art import Art
 class Customer:
     all = {}
-    
+
     def __init__(self, username, password, id=None):
         self.id = id
         self.username = username
         self.password = password
-        
-    
+
+
     def __repr__(self):
         return f"<Customer: {self.username} || id: {self.id}>"
-#validate username property before setting    
+#validate username property before setting
     @property
     def username(self):
         return self._username
@@ -24,8 +24,8 @@ class Customer:
             self._username = username
         else:
           return
-          
-            
+
+
     @property
     def password(self):
         return self._password
@@ -36,8 +36,8 @@ class Customer:
             self._password = password
         else:
             return
-            
-    def delete(self):   
+
+    def delete(self):
         """Delete the table row corresponding to the current customer instance,
         delete the dictionary entry, and reassign id attribute"""
 
@@ -54,7 +54,7 @@ class Customer:
 
         # Set the id to None
         self.id = None
-    
+
     def update(self):
         """Update the table row corresponding to the current customer instance."""
         sql = """
@@ -64,8 +64,8 @@ class Customer:
         """
         CURSOR.execute(sql, (self.username, self.password, self.id))
         CONN.commit()
-    
-           
+
+
     def save(self):
         """ Insert a new row with the username and password values of the current Customer instance.
         Update object id attribute using the primary key value of new row.
@@ -81,18 +81,18 @@ class Customer:
         self.id = CURSOR.lastrowid
         type(self).all[self.id] = self
 
-    
+
     def aquisitions(self):
         list = Art.search_by("owner", self.id)
         return list
-    
+
     @classmethod
     def create(cls, username, password):
         """ Initialize a new Customer instance and save the object to the database """
         customer = cls(username, password)
         customer.save()
         return customer
-    
+
     @classmethod
     def instance_from_db(cls, row):
         """Return a Customer object having the attribute values from the table row."""
@@ -121,7 +121,7 @@ class Customer:
         rows = CURSOR.execute(sql).fetchall()
 
         return [cls.instance_from_db(row) for row in rows]
-    
+
     @classmethod
     def find_by_id(cls, id):
         """Return Customer object corresponding to the table row matching the specified primary key"""
@@ -132,8 +132,8 @@ class Customer:
         """
 
         row = CURSOR.execute(sql, (id,)).fetchone()
-        return cls.instance_from_db(row) if row else None 
- 
+        return cls.instance_from_db(row) if row else None
+
     @classmethod
     def find_by_username(cls, username):
         """Return Customer object corresponding to the table row matching the username"""
@@ -144,5 +144,4 @@ class Customer:
         """
 
         row = CURSOR.execute(sql, (username,)).fetchone()
-        return cls.instance_from_db(row) if row else None 
-        
+        return cls.instance_from_db(row) if row else None

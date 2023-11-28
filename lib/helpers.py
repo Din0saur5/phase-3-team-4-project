@@ -34,11 +34,22 @@ def aquire_art(user, title, artist, price, year_created, preview):
     user.create_art(title, artist, price, year_created, preview)
 
 
-def all_customers():
+def all_customers(user):
     custs = Customer.get_all()
     for cust in custs:
         print(f'{custs.index(cust) + 1}) {cust}')
 
+    c1 = input("> ")
+    choice = int(c1)-1
+
+    if choice in range(len(custs)):
+        list = search_by_owner(custs.pop(choice))
+        display_art_list(list, user)
+    else:
+        os.system('cls' if os.name == 'nt' else 'clear')
+        from cli import dashboard
+        print('invalid input')
+        dashboard(user)
 
 
 def all_admins():
@@ -131,8 +142,8 @@ def all_unsold(user):
         from cli import gallery_search
         os.system('cls' if os.name == 'nt' else 'clear')
         print('invalid input')
-        gallery_search(user)       
-            
+        gallery_search(user)
+
 def all_artists():
     all_art = Art.get_all()
     all_artists = list({art.artist for art in all_art})
@@ -142,45 +153,46 @@ def all_artists():
 def search_as_admin():
     print('1) Title\n2) Artist\n3) Price Range\n4) Date Range\n5) Specific Date')
     search = input('> ')
+    search = input('> ')
 
     if search == "1":
         # Handle title search
         title_query = input("Enter title: ")
         results = Art.search_by('title', title_query)
-         
+
 
     elif search == "2":
         # Handle artist search
         artist_query = input("Enter artist: ")
         results = Art.search_by('artist', artist_query)
-         
+
 
     elif search == "3":
         # Handle price range search
         min_price = float(input("Enter minimum price: "))
         max_price = float(input("Enter maximum price: "))
         results = Art.search_range('price', min_price, max_price)
-         
+
 
     elif search == "4":
         # Handle date range search
         start_date = int(input("Enter start year (YYYY): "))
         end_date = int(input("Enter end year (YYYY): "))
         results = Art.search_range('year_created', start_date, end_date)
-         
+
 
     elif search == "5":
         # Handle specific date search
         specific_date = int(input("Enter specific year(YYYY): "))
         results = Art.search_by('year_created', specific_date)
-         
+
 
     else:
         results = ["Invalid choice. Please choose a valid option."]
-        
-    
+
+
     print(results)
-        
+
 def search_as_cust():
     print('1) Title\n2) Artist\n3) Price Range\n4) Date Range\n5) Specific Date')
     search = input('> ')
@@ -194,7 +206,7 @@ def search_as_cust():
         # Handle artist search
         artist_query = input("Enter artist: ")
         results = Art.cust_search_by('artist', artist_query)
-         
+
 
     elif search == "3":
         # Handle price range search
@@ -202,7 +214,7 @@ def search_as_cust():
         max_price = float(input("Enter maximum price: "))
         res = Art.search_range('price', min_price, max_price)
         results = [art for art in res if art.owner == 1]
-         
+
 
     elif search == "4":
         # Handle date range search
@@ -210,18 +222,18 @@ def search_as_cust():
         end_date = int(input("Enter end year (YYYY): "))
         res = Art.search_range('year_created', start_date, end_date)
         results = [art for art in res if art.owner == 1]
-         
+
 
     elif search == "5":
         # Handle specific date search
         specific_date = int(input("Enter specific year(YYYY): "))
         results = Art.cust_search_by('year_created', specific_date)
-         
+
 
     else:
         results = ["Invalid choice. Please choose a valid option."]
-        
-    
+
+
     print(results)
 
 
@@ -254,7 +266,7 @@ def cust_login(username, password):
             return False
     else:
         if password == user.password:
-            
+
             return user
         else:
             #else in any other case return False
@@ -263,7 +275,7 @@ def cust_login(username, password):
 #ART CARD (ON AN INDIVIDUAL ART CARD OPTION MENU)
 def display_art_list(list, user):
     from cli import gallery_search
-    n = 0 
+    n = 0
     while True:
         os.system('cls' if os.name == 'nt' else 'clear')
         print("-- q) exit ||m) log out || 0) back --")
@@ -289,7 +301,7 @@ def display_art_list(list, user):
             input('> ')
             os.system('cls' if os.name == 'nt' else 'clear')
             gallery_search(user)
-            
+
 def display_art_card(artpiece):
     os.system('cls' if os.name == 'nt' else 'clear')
     print(artpiece)
