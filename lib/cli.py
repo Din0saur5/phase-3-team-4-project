@@ -107,7 +107,7 @@ def admin_cmd():
 def account_settings( user):
     i = 0 
     while True:
-        os.system('cls' if os.name == 'nt' else 'clear')
+        
         print("-- q) exit ||m) log out || 0) back --")
         if i>0:
             print("!!Invalid choice!!")
@@ -148,9 +148,9 @@ def gallery_search(user):
             elif choice == "m":
                 main()
             elif choice == "0":
-                login(2)
+                dashboard(user)
             elif choice == "1":
-                search_by_owner_id(user)
+                search_by_owner(user)
             elif choice == "2":
                all_unsold()
             elif choice == "3":
@@ -189,7 +189,7 @@ def admin_galleries():
 
 #welcome print interface code
 os.system('cls' if os.name == 'nt' else 'clear')
-print("Welcome to our gallery!\n\n\n\n\n\n\n\n\n\n\n\n\n\n", )
+print("Welcome to our gallery!", )
 input("press any key to continue..")
 os.system('cls' if os.name == 'nt' else 'clear')
 main()

@@ -88,7 +88,7 @@ def remove_user(user):
     if password == user.password:
         if isinstance(user, Customer):
            user_art = Art.search_by('owner', user.id)
-           if len(user_art)>0:
+           if user_art != None:
             for art in user_art:
                art.delete()
         if isinstance(user, Admin):
@@ -158,7 +158,7 @@ else:
 
 
 
-def search_by_owner_id(owner):
+def search_by_owner(owner):
     art_list=Art.search_by('owner',owner.id)
     
     display_art_list(art_list, owner)
@@ -176,7 +176,7 @@ def cust_login(username, password):
     #check to see if username is in db
     user = Customer.find_by_username(username)
     if user is None:
-        print("Username doesn't exist would you like to make a new account or try again?")
+        print("Username doesn't exist would you like to make a new account?")
         choice = input("y/n: ")
         if choice == "y":
             from cli import login
@@ -201,41 +201,34 @@ def cust_gallery(user):
 
 #ART CARD (ON AN INDIVIDUAL ART CARD OPTION MENU)
 def display_art_list(list, user):
+    from cli import gallery_search
     n = 0 
     while True:
         os.system('cls' if os.name == 'nt' else 'clear')
         print("-- q) exit ||m) log out || 0) back --")
         if n>0:
             print("!!Invalid choice!!")
-        for art in list:
-            print(f'{list.index(art) + 1}) {art}')
-        # l = len(list)
-        # lm = round(l/3)
-        # lm2 = lm*2
-        # list1 = list[:lm]
-        # list2 = list[lm:lm2]
-        # list3 = list[lm2:]
-        # i=0
-        # for i in range(max(len(list1), len(list2), len(list3))):
-        #     col1 = f"{i+1}) {list1[i]}" if i < len(list1) else ""
-        #     col2 = f"{i+lm+1}) {list2[i]}" if i < len(list2) else ""
-        #     col3 = f"{i+lm2+1}) {list3[i]}" if i < len(list3) else ""
-            
-        #     print(f'{col1:<5}{col2:<5}{col3:<5}')
-        #     i+=1
-        choice = input("> ")
-        if choice == "q":
-            exit_program()
-        elif choice == "m":
-            from cli import main
-            main()
-        elif choice == "0":
-            from cli import gallery_search
-            gallery_search(user)
-        if int(choice) in range(1, len(list)+1):
-            display_art_card(list[int(choice)-1])
+        if list != None:
+            for art in list:
+                print(f'{list.index(art) + 1}) {art}')
+            choice = input("> ")
+            if choice == "q":
+                exit_program()
+            elif choice == "m":
+                from cli import main
+                main()
+            elif choice == "0":
+                gallery_search(user)
+            if int(choice) in range(1, len(list)+1):
+                display_art_card(list[int(choice)-1])
+            else:
+                n+=1
         else:
-            n+=1
+            print("You don't own any art yet press any key to go back")
+            input('> ')
+            os.system('cls' if os.name == 'nt' else 'clear')
+            gallery_search(user)
+            
 def display_art_card(artpiece):
     os.system('cls' if os.name == 'nt' else 'clear')
     print(artpiece)
