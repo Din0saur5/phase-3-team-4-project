@@ -1,6 +1,6 @@
 #helpers are functions that connect the user interface to the class functions, class methods; essentially these are fn that connect the db to the interface.
 #
-#for example exiting the program or going back to the previous menu 
+#for example exiting the program or going back to the previous menu
 
 from models.customers import Customer
 from models.admins import Admin
@@ -10,7 +10,7 @@ import os
 def exit_program():
     print("Goodbye!")
     exit()
-    
+
 
 
 
@@ -30,18 +30,24 @@ def admin_login(username, password):
 
 
 
-def aquire_art():
-    pass
+def aquire_art(user, title, artist, price, year_created, preview):
+    user.create_art(title, artist, price, year_created, preview)
 
 
 def all_customers():
-    pass
+    custs = Customer.get_all()
+    for cust in custs:
+        print(f'{custs.index(cust) + 1}) {cust}')
+
+
 
 def all_admins():
-    pass
+    admins = Admin.get_all()
+    for admin in admins:
+        print(f'{admins.index(admin) + 1}) {admin}')
 
 def add_admin():
-    pass
+    return Admin.create(username, password)
 
 #SEARCH ART +ART LIST FNS USED FOR ADMIN AND/OR CUST INTERFACE --requires differentiation b12 admin or cust
 def change_username(user):
@@ -59,10 +65,10 @@ def change_username(user):
             print("update successful press any key to return to go back to settings")
             input("> ")
             return True
-        else: 
+        else:
             i+=1
-    
-        
+
+
 def change_password(user):
     i =0
     while True:
@@ -78,9 +84,9 @@ def change_password(user):
             print("update successful press any key to return to go back to settings")
             input("> ")
             return True
-        else: 
+        else:
             i+=1
-            
+
 def remove_user(user):
     print("Warning!! this cannot be undone and we will remove all of your art from our database!")
     print("enter password to PERMANANTLY remove your account")
@@ -104,16 +110,25 @@ def remove_user(user):
         main()
 
 def all_art():
-    pass
+    arts = Art.get_all()
+    for art in arts:
+        print(f'{arts.index(art) + 1}) {art}')
 
 def all_sold():
-    pass
+    all_sold =  Art.search_sold()
+    for sold in all_sold:
+        print(f'{all_sold.index(sold) + 1}) {sold}')
 
 def all_unsold():
-    pass #use search_by fn setting the owner to 1
+    all_unsold = Art.search_by("owner", 1)
+    for unsold in all_unsold:
+        print(f'{all_unsold.index(unsold) + 1}) {unsold}')
 
 def all_artists():
-    pass
+    all_art = Art.get_all()
+    all_artists = list({art.artist for art in all_art})
+    for artist in all_artists:
+        print(f"{all_artists.index(artist) +1}) {artist}")
 
 def search_by():
     print('1) Title\n2) Artist\n3) Price Range\n4) Date Range\n5) Specific Date')
@@ -154,23 +169,23 @@ elif search == "5":
 else:
     print("Invalid choice. Please choose a valid option.")
 
-       
+
 
 
 
 def search_by_owner_id(owner):
     art_list=Art.search_by('owner',owner.id)
-    
+
     display_art_list(art_list, owner)
-    
+
 def search_by_id(type_class,id):
     type_class.find_by_id(id)
 
 #CUSTOMER ONLY INTERFACE FNS
- 
+
 def register_cust(username, password):
     cust = Customer.create(username, password)
-    return cust       
+    return cust
 
 def cust_login(username, password):
     #check to see if username is in db
@@ -181,7 +196,7 @@ def cust_login(username, password):
         if choice == "y":
             from cli import login
             login(1)
-            
+
         else:
             return False
     else:
@@ -191,17 +206,10 @@ def cust_login(username, password):
         else:
             #else in any other case return False
             return False
-        
-
-
-def cust_gallery(user):
-    pass
-
-    
 
 #ART CARD (ON AN INDIVIDUAL ART CARD OPTION MENU)
 def display_art_list(list, user):
-    n = 0 
+    n = 0
     while True:
         os.system('cls' if os.name == 'nt' else 'clear')
         print("-- q) exit ||m) log out || 0) back --")
@@ -220,7 +228,7 @@ def display_art_list(list, user):
         #     col1 = f"{i+1}) {list1[i]}" if i < len(list1) else ""
         #     col2 = f"{i+lm+1}) {list2[i]}" if i < len(list2) else ""
         #     col3 = f"{i+lm2+1}) {list3[i]}" if i < len(list3) else ""
-            
+
         #     print(f'{col1:<5}{col2:<5}{col3:<5}')
         #     i+=1
         choice = input("> ")
@@ -241,11 +249,13 @@ def display_art_card(artpiece):
     print(artpiece)
 
 #ADMIN ONLY OPTIONS
-def edit_price():
-    pass
+def edit_price(artpiece, price):
+    artpiece.price = price
+    artpiece.update()
 
-def remove_art():
-    pass
+def remove_art(artpiece):
+    artpiece.delete()
+
 
 
 #CUSTOMER ONLY OPTIONS
@@ -256,7 +266,7 @@ def purchase_art(customer, artpiece):
 def sell_art(artpiece):
     artpiece.price = round(artpiece.price*1.2, 2)
     donate_art(artpiece)
-    
+
 def donate_art(artpiece):
-    artpiece.owner = 1 #customer id of gallery 
+    artpiece.owner = 1 #customer id of gallery
     artpiece.update()
