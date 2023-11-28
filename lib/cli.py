@@ -67,7 +67,7 @@ def dashboard(user):
             elif choice == "0":
                 login(2)
             elif choice == "1":
-                gallery_search(user)
+                cust_gallery_search(user)
             elif choice == "2":
                 account_settings(user)
 
@@ -86,7 +86,7 @@ def dashboard(user):
             elif choice == "1":
                 admin_menu(user)
             elif choice == "2":
-                pass
+                admin_gallery_search(user)
             elif choice == "3":
                 all_customers(user)
 
@@ -137,8 +137,9 @@ def main_menu():
     print("1. Register new customer")
     print("2. Login")
 
-def gallery_search(user):
-
+def cust_gallery_search(user):
+    i = 0
+    while True:
         if isinstance(user, Customer):
             customer_galleries()
             choice = input("> ")
@@ -155,10 +156,15 @@ def gallery_search(user):
                all_unsold(user)
             elif choice == "3":
                 search_as_cust()
+            elif choice == "4":
+                all_artists(user)
             else:
                 i+=1
 
-        elif isinstance(user, Admin):
+def admin_gallery_search(user):
+    i = 0
+    while True:
+        if isinstance(user, Admin):
             admin_galleries()
             choice = input("> ")
             os.system('cls' if os.name == 'nt' else 'clear')

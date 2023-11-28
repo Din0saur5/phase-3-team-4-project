@@ -144,12 +144,24 @@ def all_unsold(user):
         print('invalid input')
         gallery_search(user)
 
-def all_artists():
-    all_art = Art.get_all()
+def all_artists(user):
+    if isinstance(user, Customer):
+        all_art =  Art.search_by("owner", 1)
+    else:
+        all_art = Art.get_all()
     all_artists = list({art.artist for art in all_art})
     for artist in all_artists:
         print(f"{all_artists.index(artist) +1}) {artist}")
+        
+    c1 = input("> ")
+    choice = int(c1)-1
 
+    if choice in range(len(all_artists)):
+        list = search_by_owner(all_artists.pop(choice))
+        display_art_list(list, user)
+    else:
+        os.system('cls' if os.name == 'nt' else 'clear')
+        
 def search_as_admin():
     print('1) Title\n2) Artist\n3) Price Range\n4) Date Range\n5) Specific Date')
     search = input('> ')
@@ -304,6 +316,7 @@ def display_art_list(list, user):
 
 def display_art_card(artpiece):
     os.system('cls' if os.name == 'nt' else 'clear')
+    #run gui image here 
     print(artpiece)
 
 #ADMIN ONLY OPTIONS
