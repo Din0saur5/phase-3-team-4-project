@@ -200,6 +200,21 @@ class Art:
         return [cls.instance_from_db(row) for row in rows] if rows else None
     
     @classmethod
+    def cust_search_by(cls, column, query):
+        # Validate the column name to prevent SQL injection
+        allowed_columns = ['title', 'artist', 'year_created', 'admin_acquisition', 'preview', 'owner']
+        if column not in allowed_columns:
+            return print(f"Invalid column name: {column}")
+
+        sql = f"""
+            SELECT *
+            FROM art
+            WHERE {column} = ? AND 'owner' = ?
+        """
+
+        rows = CURSOR.execute(sql, (query, 1)).fetchall() #returns a list of tuples
+        return [cls.instance_from_db(row) for row in rows] if rows else None
+    @classmethod
     def search_range(cls, column, min, max):
         allowed_columns = ['price', 'year_created']
         if column not in allowed_columns:
@@ -210,7 +225,7 @@ class Art:
             WHERE {column} BETWEEN ? AND ?
         """
 
-        rows = CURSOR.execute(sql, (min, max))
+        rows = CURSOR.execute(sql, (min, max)).fetchall()
         return [cls.instance_from_db(row) for row in rows] if rows else None
     
     @classmethod
@@ -221,7 +236,7 @@ class Art:
             WHERE owner != 1
         """
 
-        rows = CURSOR.execute(sql)
+        rows = CURSOR.execute(sql).fetchall()
         return [cls.instance_from_db(row) for row in rows] if rows else None
     
     @classmethod

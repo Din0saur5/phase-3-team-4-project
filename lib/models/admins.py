@@ -140,10 +140,10 @@ class Admin:
     
     @classmethod
     def find_by_username(cls, username):
-        """Return Customer object corresponding to the table row matching the username"""
+        """Return Admins object corresponding to the table row matching the username"""
         sql = """
             SELECT *
-            FROM customers
+            FROM admins
             WHERE username = ?
         """
 

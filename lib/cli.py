@@ -43,7 +43,7 @@ def login(choice):
                 verify = cust_login(user, password)
             else:
                 verify = admin_login(user, password)
-        if isinstance(verify, (Customer,Admin)):             
+        if isinstance(verify, Customer) or isinstance(verify, Admin):             
             dashboard(verify)  
         else:
             i+=1
@@ -152,9 +152,9 @@ def gallery_search(user):
             elif choice == "1":
                 search_by_owner(user)
             elif choice == "2":
-               all_unsold()
+               all_unsold(user)
             elif choice == "3":
-                search_by()
+                search_as_cust()
             else:
                 i+=1
                 
@@ -180,16 +180,27 @@ def customer_galleries():
     print("1. View personal gallery")
     print("2. view complete library")
     print("3. search library by")
+    print("4. list of all artists names")
+    
 def admin_galleries():
-    pass
+    print("Please select an option:")
+    print("1. View personal gallery")
+    print("2. view complete library")
+    print("3. search library by")
+
+
+
+def customer_gallery_menu(user):
+    
+ pass
 
 
 
 
 
-#welcome print interface code
-os.system('cls' if os.name == 'nt' else 'clear')
-print("Welcome to our gallery!", )
-input("press any key to continue..")
-os.system('cls' if os.name == 'nt' else 'clear')
-main()
+if __name__ == '__main__':
+    #welcome print interface code
+    os.system('cls' if os.name == 'nt' else 'clear')
+    print("Welcome to our gallery!", )
+    input("Press any key to continue...")
+    main()

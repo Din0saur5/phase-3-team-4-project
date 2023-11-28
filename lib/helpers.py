@@ -119,57 +119,110 @@ def all_sold():
     for sold in all_sold:
         print(f'{all_sold.index(sold) + 1}) {sold}')
 
-def all_unsold():
+def all_unsold(user):
     all_unsold = Art.search_by("owner", 1)
     for unsold in all_unsold:
         print(f'{all_unsold.index(unsold) + 1}) {unsold}')
-
+    c1=input('> ')
+    choice = int(c1) -1
+    if choice in range(len(all_unsold)):
+        display_art_card(all_unsold[choice])
+    else:
+        from cli import gallery_search
+        os.system('cls' if os.name == 'nt' else 'clear')
+        print('invalid input')
+        gallery_search(user)       
+            
 def all_artists():
     all_art = Art.get_all()
     all_artists = list({art.artist for art in all_art})
     for artist in all_artists:
         print(f"{all_artists.index(artist) +1}) {artist}")
 
-def search_by():
+def search_as_admin():
     print('1) Title\n2) Artist\n3) Price Range\n4) Date Range\n5) Specific Date')
-search = input('> ')
+    search = input('> ')
 
-if search == "1":
-    # Handle title search
-    title_query = input("Enter title: ")
-    results = Art.search_by('title', title_query)
-    # Process results...
+    if search == "1":
+        # Handle title search
+        title_query = input("Enter title: ")
+        results = Art.search_by('title', title_query)
+         
 
-elif search == "2":
-    # Handle artist search
-    artist_query = input("Enter artist: ")
-    results = Art.search_by('artist', artist_query)
-    # Process results...
+    elif search == "2":
+        # Handle artist search
+        artist_query = input("Enter artist: ")
+        results = Art.search_by('artist', artist_query)
+         
 
-elif search == "3":
-    # Handle price range search
-    min_price = float(input("Enter minimum price: "))
-    max_price = float(input("Enter maximum price: "))
-    results = Art.search_range('price', min_price, max_price)
-    # Process results...
+    elif search == "3":
+        # Handle price range search
+        min_price = float(input("Enter minimum price: "))
+        max_price = float(input("Enter maximum price: "))
+        results = Art.search_range('price', min_price, max_price)
+         
 
-elif search == "4":
-    # Handle date range search
-    start_date = int(input("Enter start year (YYYY): "))
-    end_date = int(input("Enter end year (YYYY): "))
-    results = Art.search_range('year_created', start_date, end_date)
-    # Process results...
+    elif search == "4":
+        # Handle date range search
+        start_date = int(input("Enter start year (YYYY): "))
+        end_date = int(input("Enter end year (YYYY): "))
+        results = Art.search_range('year_created', start_date, end_date)
+         
 
-elif search == "5":
-    # Handle specific date search
-    specific_date = int(input("Enter specific year(YYYY): "))
-    results = Art.search_by('year_created', specific_date)
-    # Process results...
+    elif search == "5":
+        # Handle specific date search
+        specific_date = int(input("Enter specific year(YYYY): "))
+        results = Art.search_by('year_created', specific_date)
+         
 
-else:
-    print("Invalid choice. Please choose a valid option.")
+    else:
+        results = ["Invalid choice. Please choose a valid option."]
+        
+    
+    print(results)
+        
+def search_as_cust():
+    print('1) Title\n2) Artist\n3) Price Range\n4) Date Range\n5) Specific Date')
+    search = input('> ')
 
+    if search == "1":
+        # Handle title search
+        title_query = input("Enter title: ")
+        results = Art.cust_search_by('title', title_query)
 
+    elif search == "2":
+        # Handle artist search
+        artist_query = input("Enter artist: ")
+        results = Art.cust_search_by('artist', artist_query)
+         
+
+    elif search == "3":
+        # Handle price range search
+        min_price = float(input("Enter minimum price: "))
+        max_price = float(input("Enter maximum price: "))
+        res = Art.search_range('price', min_price, max_price)
+        results = [art for art in res if art.owner == 1]
+         
+
+    elif search == "4":
+        # Handle date range search
+        start_date = int(input("Enter start year (YYYY): "))
+        end_date = int(input("Enter end year (YYYY): "))
+        res = Art.search_range('year_created', start_date, end_date)
+        results = [art for art in res if art.owner == 1]
+         
+
+    elif search == "5":
+        # Handle specific date search
+        specific_date = int(input("Enter specific year(YYYY): "))
+        results = Art.cust_search_by('year_created', specific_date)
+         
+
+    else:
+        results = ["Invalid choice. Please choose a valid option."]
+        
+    
+    print(results)
 
 
 
@@ -201,7 +254,7 @@ def cust_login(username, password):
             return False
     else:
         if password == user.password:
-            # if it does return cust.id
+            
             return user
         else:
             #else in any other case return False
@@ -232,7 +285,7 @@ def display_art_list(list, user):
             else:
                 n+=1
         else:
-            print("You don't own any art yet press any key to go back")
+            print("None press any key to go back to gallery search")
             input('> ')
             os.system('cls' if os.name == 'nt' else 'clear')
             gallery_search(user)
