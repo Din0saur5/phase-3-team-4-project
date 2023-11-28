@@ -12,7 +12,7 @@ class Customer:
         
     
     def __repr__(self):
-        return f"<Customer {self.id}: {self.username}>"
+        return f"<Customer: {self.username} || id: {self.id}>"
 #validate username property before setting    
     @property
     def username(self):
@@ -23,9 +23,8 @@ class Customer:
         if isinstance(username, str) and len(username) in range(5,16) and ' ' not in username:
             self._username = username
         else:
-            raise Exception(
-                "Username must be a string between 5-15 characters and no spaces"
-            )
+          return
+          
             
     @property
     def password(self):
@@ -36,9 +35,7 @@ class Customer:
         if isinstance(password, str) and len(password) >= 8 and ' ' not in password and password != password.lower() and any(char.isdigit() for char in password):
             self._password = password
         else:
-            raise Exception(
-                "Password must be a string over 8 characters and no spaces, include a capital letter, and a number"
-            )
+            return
             
     def delete(self):   
         """Delete the table row corresponding to the current customer instance,
@@ -137,3 +134,15 @@ class Customer:
         row = CURSOR.execute(sql, (id,)).fetchone()
         return cls.instance_from_db(row) if row else None 
  
+    @classmethod
+    def find_by_username(cls, username):
+        """Return Customer object corresponding to the table row matching the username"""
+        sql = """
+            SELECT *
+            FROM customers
+            WHERE username = ?
+        """
+
+        row = CURSOR.execute(sql, (username,)).fetchone()
+        return cls.instance_from_db(row) if row else None 
+        

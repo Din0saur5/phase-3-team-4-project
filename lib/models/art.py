@@ -1,13 +1,12 @@
 #this is where we will put the art class
 #models should focus on database crud actions 
 from models.__init__ import CURSOR, CONN
-from models.customers import gallery
 
 class Art:
      
     all = {}
     
-    def __init__(self, title, artist, price, year_created, admin_acquisition, preview, id=None):
+    def __init__(self, title, artist, price, year_created, admin_acquisition, preview, id=None, owner = 1):
         
         self.id = id
         self.title = title
@@ -16,12 +15,13 @@ class Art:
         self.year_created = year_created
         self.admin_acquisition = admin_acquisition
         self.preview = preview
-        self.owner = gallery
+        self.owner = owner
         
         
     
     def __repr__(self):
-        return f"<{self.title}\t{self.artist}\t${self.price}>"
+        
+        return f"<{self.title}\t{self.artist}\t${self.price:,.2f}>"
   
     @property
     def title(self):
@@ -30,9 +30,9 @@ class Art:
     @title.setter
     def title(self, value):
         if not isinstance(value, str) and not hasattr(self, "title"):
-            raise Exception("Title must be a non-empty string")
+            return print("Title must be a non-empty string")
         elif not value:
-            raise Exception("Title cannot be an empty string")
+            return print("Title cannot be an empty string")
         else:
             self._title = value.capitalize()
 
@@ -43,9 +43,9 @@ class Art:
     @artist.setter
     def artist(self, value):
         if not isinstance(value, str) and not hasattr(self, "artist"):
-            raise Exception("Artist must be a non-empty string")
+            return print("Artist must be a non-empty string")
         elif not value:
-            raise Exception("Artist cannot be an empty string")
+            return print("Artist cannot be an empty string")
         else:
             self._artist = value.capitalize()
       
@@ -56,11 +56,9 @@ class Art:
     @price.setter
     def price(self, value):
         if not isinstance(value, (float, int)):
-            raise Exception("Price must be a float or integer")
-        elif not (0 <= value % 1 < 0.01):  # Check for two decimal places
-            raise Exception("Price must have exactly two decimal places")
-        else:
-            self._price = float(f"{value:.2f}")       
+            return print("Price must be a float or integer")
+        rounded_value = round(value, 2)
+        self._price = float(f"{rounded_value:.2f}")       
     
     @property
     def year_created(self):
@@ -69,7 +67,7 @@ class Art:
     @year_created.setter
     def year_created(self, value):
         if not isinstance(value, int) and not hasattr(self, "year_created"):
-            raise Exception("Year created must be an integer")
+            return print("Year created must be an integer")
         else:
             self._year_created = value
     
@@ -81,7 +79,7 @@ class Art:
     def admin_acquisition(self, value):
         from models.admins import Admin
         if not isinstance(value, int) and not hasattr(self, "admin_acquisition") and Admin.find_by_id(value):
-            raise Exception("Admin acquisition must be an instance of the Admin class")
+            return print("Admin acquisition must be an instance of the Admin class")
         else:
             self._admin_acquisition = value  
     
@@ -94,7 +92,7 @@ class Art:
         if isinstance(owner, (int, None)) and Customer.find_by_id(owner):
             self._owner = owner
         else:
-            raise Exception('error setting owner')    
+            return('error setting owner')    
         
     
     
@@ -121,10 +119,10 @@ class Art:
        
         sql = """
             UPDATE art
-            SET   price = ?, owner = ?,  
+            SET   price = ?, owner = ?, admin_acquisition = ? 
             WHERE id = ?
         """
-        CURSOR.execute(sql, (self.price, self.owner, self.id))
+        CURSOR.execute(sql, (self.price, self.owner, self.admin_acquisition, self.id))
         CONN.commit()
     
    
@@ -165,10 +163,10 @@ class Art:
             art.admin_acquisition = row[5]
             art.preview = row[6]
             art.owner = row[7]
-            art.sold = row[8]
+            
         else:
             # not in dictionary, create new instance and add to dictionary
-            art = cls(row[1], row[2], row[3],row[4],row[5],row[6],row[7],row[8])
+            art = cls(row[1], row[2], row[3],row[4],row[5],row[6],row[7])
             art.id = row[0]
             cls.all[art.id] = art
         return art #returns an object
@@ -183,14 +181,14 @@ class Art:
 
         rows = CURSOR.execute(sql).fetchall()
 
-        return [cls.instance_from_db(row) for row in rows] #returns a list of onjects
+        return [cls.instance_from_db(row) for row in rows] #returns a list of objects
     
     @classmethod
     def search_by(cls, column, query):
         # Validate the column name to prevent SQL injection
-        allowed_columns = ['title', 'artist', 'year_created', 'admin_aquisition', 'preview', 'owner']
+        allowed_columns = ['title', 'artist', 'year_created', 'admin_acquisition', 'preview', 'owner']
         if column not in allowed_columns:
-            raise Exception(f"Invalid column name: {column}")
+            return print(f"Invalid column name: {column}")
 
         sql = f"""
             SELECT *
@@ -198,14 +196,14 @@ class Art:
             WHERE {column} = ?
         """
 
-        rows = CURSOR.execute(sql, (query,)) #returns a list of tuples
+        rows = CURSOR.execute(sql, (query,)).fetchall() #returns a list of tuples
         return [cls.instance_from_db(row) for row in rows] if rows else None
     
     @classmethod
     def search_range(cls, column, min, max):
         allowed_columns = ['price', 'year_created']
         if column not in allowed_columns:
-            raise Exception(f"Invalid column name: {column}")
+           return print(f"Invalid column name: {column}")
         sql = f"""
             SELECT *
             FROM art
@@ -220,10 +218,10 @@ class Art:
         sql = """
             SELECT *
             FROM art
-            WHERE owner != ?
+            WHERE owner != 1
         """
 
-        rows = CURSOR.execute(sql, (gallery[id],))
+        rows = CURSOR.execute(sql)
         return [cls.instance_from_db(row) for row in rows] if rows else None
     
     @classmethod
