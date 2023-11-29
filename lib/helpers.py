@@ -349,10 +349,12 @@ def display_art_list(list, user):
                 admin_gallery_search(user)
 
 def display_art_card(artpiece, user, list):
+    from preview_win import show_preview
     os.system('cls' if os.name == 'nt' else 'clear')
     print(f"{artpiece.title}")
     print(f"   by {artpiece.artist} -- {artpiece.year_created} ")
     print(f"${artpiece.price:,.2f}")
+    show_preview(artpiece)
     if isinstance(user, Customer) and artpiece.owner != user.id:
         choice = input("purchase (y/n): ")
         if choice == "y":
