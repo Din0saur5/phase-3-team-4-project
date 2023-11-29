@@ -374,7 +374,7 @@ def display_art_card(artpiece, user, list):
         choice = input("> ")
         if choice == "1":
             price = input("new price: ")
-            edit_price(artpiece, price)
+            edit_price(artpiece, float(price))
             display_art_list(list, user)
         elif choice == "2":
             rus = input("are you sure, cannot be undone? (y/n):  ")
