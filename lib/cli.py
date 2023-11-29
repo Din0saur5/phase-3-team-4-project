@@ -65,7 +65,7 @@ def dashboard(user):
             elif choice == "m":
                 main()
             elif choice == "0":
-                login(2)
+                login("2")
             elif choice == "1":
                 cust_gallery_search(user)
             elif choice == "2":
@@ -233,6 +233,7 @@ def admin_menu(user):
             register_admin(user)
         elif choice == "3":
             all_admins()
+            
         else:
             i+=1
 
