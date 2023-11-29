@@ -53,10 +53,16 @@ def all_customers(user):
         dashboard(user)
 
 
-def all_admins():
+def all_admins(user):
+    os.system('cls' if os.name == 'nt' else 'clear')
     admins = Admin.get_all()
     for admin in admins:
         print(f'{admins.index(admin) + 1}) {admin}')
+
+    choice = input("     Press any key to go back         ")
+    if choice:
+        from cli import admin_menu
+        admin_menu(user)
 
 def add_admin(username, password):
     new_admin = Admin.create(username, password)
@@ -157,17 +163,17 @@ def all_artists(user):
     all_artists = list({art.artist for art in all_art})
     for artist in all_artists:
         print(f"{all_artists.index(artist) +1}) {artist}")
-        
+
     c1 = input("> ")
     choice = int(c1)-1
 
     if choice in range(len(all_artists)):
-        
+
         list = Art.search_by('artist', all_artists.pop(choice))
         display_art_list(list, user)
     else:
         os.system('cls' if os.name == 'nt' else 'clear')
-        
+
 def search_as_admin():
     print('1) Title\n2) Artist\n3) Price Range\n4) Date Range\n5) Specific Date')
     search = input('> ')
@@ -259,7 +265,7 @@ def search_as_cust():
 def search_by_owner(owner):
     art_list=Art.search_by('owner',owner.id)
     return art_list
-    
+
 
 def search_by_id(type_class,id):
     type_class.find_by_id(id)
@@ -328,7 +334,7 @@ def display_art_list(list, user):
 
 def display_art_card(artpiece):
     os.system('cls' if os.name == 'nt' else 'clear')
-    #run gui image here 
+    #run gui image here
     print(artpiece)
 
 #ADMIN ONLY OPTIONS

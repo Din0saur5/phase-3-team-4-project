@@ -188,7 +188,7 @@ def admin_gallery_search(user):
                 pass
 
 def customer_galleries():
-    
+
     print("Please select an option:")
     print("1. View personal gallery")
     print("2. view complete library")
@@ -196,7 +196,7 @@ def customer_galleries():
     print("4. list of all artists names")
 
 def admin_galleries():
-    
+
     print("Please select an option:")
     print("1. View personal gallery")
     print("2. view complete library")
@@ -208,7 +208,7 @@ def customer_gallery_menu(user):
     pass
 
 def admin_menu(user):
-    
+
     i = 0
     while True:
         os.system('cls' if os.name == 'nt' else 'clear')
@@ -232,7 +232,7 @@ def admin_menu(user):
         elif choice == "2":
             register_admin(user)
         elif choice == "3":
-            all_admins()
+            all_admins(user)
         else:
             i+=1
 
@@ -263,8 +263,8 @@ def register_admin(admin):
                 continue
         else:
             i+=1
-       
-        
+
+
 
 if __name__ == '__main__':
     #welcome print interface code
