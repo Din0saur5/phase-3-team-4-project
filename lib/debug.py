@@ -11,5 +11,5 @@ usern = 'Gallery'
 pas= "Gallery1"
 user = cust_login(usern, pas)
 
-gallery_search(user)
+dashboard(user)
 # ipdb.set_trace

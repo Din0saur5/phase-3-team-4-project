@@ -140,10 +140,13 @@ def main_menu():
 def cust_gallery_search(user):
     i = 0
     while True:
+        os.system('cls' if os.name == 'nt' else 'clear')
+        print("-- q) exit ||m) log out || 0) back --")
+        if i>0:
+            print("!!Invalid choice!!")
         if isinstance(user, Customer):
             customer_galleries()
             choice = input("> ")
-            os.system('cls' if os.name == 'nt' else 'clear')
             if choice == "q":
                 exit_program()
             elif choice == "m":
@@ -164,10 +167,13 @@ def cust_gallery_search(user):
 def admin_gallery_search(user):
     i = 0
     while True:
+        os.system('cls' if os.name == 'nt' else 'clear')
+        print("-- q) exit ||m) log out || 0) back --")
+        if i>0:
+            print("!!Invalid choice!!")
         if isinstance(user, Admin):
             admin_galleries()
             choice = input("> ")
-            os.system('cls' if os.name == 'nt' else 'clear')
             if choice == "q":
                 exit_program()
             elif choice == "m":
@@ -182,6 +188,7 @@ def admin_gallery_search(user):
                 pass
 
 def customer_galleries():
+    
     print("Please select an option:")
     print("1. View personal gallery")
     print("2. view complete library")
@@ -189,6 +196,7 @@ def customer_galleries():
     print("4. list of all artists names")
 
 def admin_galleries():
+    
     print("Please select an option:")
     print("1. View personal gallery")
     print("2. view complete library")
@@ -201,8 +209,10 @@ def customer_gallery_menu(user):
  pass
 
 def admin_menu(user):
+    
     i = 0
     while True:
+        os.system('cls' if os.name == 'nt' else 'clear')
         print("-- q) exit ||m) log out || 0) back --")
         if i>0:
             print("!!Invalid choice!!")

@@ -139,10 +139,13 @@ def all_unsold(user):
     if choice in range(len(all_unsold)):
         display_art_card(all_unsold[choice])
     else:
-        from cli import gallery_search
+        from cli import cust_gallery_search, admin_gallery_search
         os.system('cls' if os.name == 'nt' else 'clear')
         print('invalid input')
-        gallery_search(user)
+        if isinstance(user, Customer):
+            cust_gallery_search(user)
+        else:
+            admin_gallery_search(user)
 
 def all_artists(user):
     if isinstance(user, Customer):
@@ -157,7 +160,8 @@ def all_artists(user):
     choice = int(c1)-1
 
     if choice in range(len(all_artists)):
-        list = search_by_owner(all_artists.pop(choice))
+        
+        list = Art.search_by('artist', all_artists.pop(choice))
         display_art_list(list, user)
     else:
         os.system('cls' if os.name == 'nt' else 'clear')
@@ -252,8 +256,8 @@ def search_as_cust():
 
 def search_by_owner(owner):
     art_list=Art.search_by('owner',owner.id)
-
-    display_art_list(art_list, owner)
+    return art_list
+    
 
 def search_by_id(type_class,id):
     type_class.find_by_id(id)
@@ -286,7 +290,7 @@ def cust_login(username, password):
 
 #ART CARD (ON AN INDIVIDUAL ART CARD OPTION MENU)
 def display_art_list(list, user):
-    from cli import gallery_search
+    from cli import cust_gallery_search, admin_gallery_search
     n = 0
     while True:
         os.system('cls' if os.name == 'nt' else 'clear')
@@ -303,7 +307,10 @@ def display_art_list(list, user):
                 from cli import main
                 main()
             elif choice == "0":
-                gallery_search(user)
+                if isinstance(user, Customer):
+                    cust_gallery_search(user)
+                else:
+                    admin_gallery_search(user)
             if int(choice) in range(1, len(list)+1):
                 display_art_card(list[int(choice)-1])
             else:
@@ -312,7 +319,10 @@ def display_art_list(list, user):
             print("None press any key to go back to gallery search")
             input('> ')
             os.system('cls' if os.name == 'nt' else 'clear')
-            gallery_search(user)
+            if isinstance(user, Customer):
+                cust_gallery_search(user)
+            else:
+                admin_gallery_search(user)
 
 def display_art_card(artpiece):
     os.system('cls' if os.name == 'nt' else 'clear')
