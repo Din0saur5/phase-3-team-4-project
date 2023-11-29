@@ -41,13 +41,16 @@ def aquire_art(user):
     print("for preview: right click img file in gallery_photos select copy relative path and paste into preview input")
 
     title= input("title: ")
-    if title == "0" : return
+    if title == "0" or title == "": return
+
     artist = input("artist: ")
-    if artist == "0" : return
+    if artist == "0" or artist == "": return
+
     yearS = input("year (yyyy): ")
-    if yearS == "0" : return
+    if yearS == "0" or not isinstance(yearS, int): return
+    
     priceS = input("price (0.00): $")
-    if priceS == "0" : return
+    if priceS == "0" or not isinstance(priceS, int) or not isinstance(ypriceSearS, float): return
 
     year_created = int(yearS)
     price = int(priceS)
