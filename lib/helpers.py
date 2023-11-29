@@ -44,8 +44,8 @@ def all_customers(user):
 
     if choice in range(len(custs)):
         pass
-        #list = search_by_owner(custs.pop(choice))
-        #displaye(list, user)
+        list = search_by_owner(custs.pop(choice))
+        display_art_list(list, user)
     else:
         os.system('cls' if os.name == 'nt' else 'clear')
         from cli import dashboard
