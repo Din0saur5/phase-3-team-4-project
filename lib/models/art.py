@@ -1,13 +1,13 @@
 #this is where we will put the art class
-#models should focus on database crud actions 
+#models should focus on database crud actions
 from models.__init__ import CURSOR, CONN
 
 class Art:
-     
+
     all = {}
-    
+
     def __init__(self, title, artist, price, year_created, admin_acquisition, preview, id=None, owner = 1):
-        
+
         self.id = id
         self.title = title
         self.artist = artist
@@ -16,13 +16,13 @@ class Art:
         self.admin_acquisition = admin_acquisition
         self.preview = preview
         self.owner = owner
-        
-        
-    
+
+
+
     def __repr__(self):
-        
+
         return f"<{self.title}\t{self.artist}\t${self.price:,.2f}>"
-  
+
     @property
     def title(self):
         return self._title
@@ -48,7 +48,7 @@ class Art:
             raise Exception("Artist cannot be an empty string")
         else:
             self._artist = value.capitalize()
-      
+
     @property
     def price(self):
         return self._price
@@ -58,8 +58,8 @@ class Art:
         if not isinstance(value, (float, int)):
             raise Exception("Price must be a float or integer")
         rounded_value = round(value, 2)
-        self._price = float(f"{rounded_value:.2f}")       
-    
+        self._price = float(f"{rounded_value:.2f}")
+
     @property
     def year_created(self):
         return self._year_created
@@ -70,7 +70,7 @@ class Art:
             raise Exception("Year created must be an integer")
         else:
             self._year_created = value
-    
+
     @property
     def admin_acquisition(self):
         return self._admin_acquisition
@@ -81,8 +81,8 @@ class Art:
         if not isinstance(value, int) and not hasattr(self, "admin_acquisition") and Admin.find_by_id(value):
             raise Exception("Admin acquisition must be an instance of the Admin class")
         else:
-            self._admin_acquisition = value  
-    
+            self._admin_acquisition = value
+
     @property
     def owner(self):
         return self._owner
@@ -92,11 +92,11 @@ class Art:
         if isinstance(owner, (int, None)) and Customer.find_by_id(owner):
             self._owner = owner
         else:
-            return('error setting owner')    
-        
-    
-    
-    def delete(self):   
+            return('error setting owner')
+
+
+
+    def delete(self):
         """Delete the table row corresponding to the current art instance,
         delete the dictionary entry, and reassign id attribute"""
 
@@ -113,20 +113,20 @@ class Art:
 
         # Set the id to None
         self.id = None
-    
+
     def update(self):
         """Update the table row corresponding to the current art instance."""
-       
+
         sql = """
             UPDATE art
-            SET   price = ?, owner = ?, admin_acquisition = ? 
+            SET   price = ?, owner = ?, admin_acquisition = ?
             WHERE id = ?
         """
         CURSOR.execute(sql, (self.price, self.owner, self.admin_acquisition, self.id))
         CONN.commit()
-    
-   
-    
+
+
+
     def save(self):
         """ Insert a new row with the username and password values of the current Admin instance.
         Update object id attribute using the primary key value of new row.
@@ -147,7 +147,7 @@ class Art:
         art = cls( title, artist, price, year_created, admin_acquisition, preview)
         art.save()
         return art
-    
+
     @classmethod
     def instance_from_db(cls, row):
         """Return a Art object having the attribute values from the table row."""
@@ -163,7 +163,7 @@ class Art:
             art.admin_acquisition = row[5]
             art.preview = row[6]
             art.owner = row[7]
-            
+
         else:
             # not in dictionary, create new instance and add to dictionary
             art = cls(row[1], row[2], row[3],row[4],row[5],row[6],row[7])
@@ -182,7 +182,7 @@ class Art:
         rows = CURSOR.execute(sql).fetchall()
 
         return [cls.instance_from_db(row) for row in rows] #returns a list of objects
-    
+
     @classmethod
     def search_by(cls, column, query):
         # Validate the column name to prevent SQL injection
@@ -198,7 +198,7 @@ class Art:
 
         rows = CURSOR.execute(sql, (query,)).fetchall() #returns a list of tuples
         return [cls.instance_from_db(row) for row in rows] if rows else None
-    
+
     @classmethod
     def cust_search_by(cls, column, query):
         # Validate the column name to prevent SQL injection
@@ -209,7 +209,7 @@ class Art:
         sql = f"""
             SELECT *
             FROM art
-            WHERE {column} = ? AND 'owner' = ?
+            WHERE {column} = ? AND owner = ?
         """
 
         rows = CURSOR.execute(sql, (query, 1)).fetchall() #returns a list of tuples
@@ -227,7 +227,7 @@ class Art:
 
         rows = CURSOR.execute(sql, (min, max)).fetchall()
         return [cls.instance_from_db(row) for row in rows] if rows else None
-    
+
     @classmethod
     def search_sold(cls):
         sql = """
@@ -238,7 +238,7 @@ class Art:
 
         rows = CURSOR.execute(sql).fetchall()
         return [cls.instance_from_db(row) for row in rows] if rows else None
-    
+
     @classmethod
     def find_by_id(cls, id):
         """Return Art object corresponding to the table row matching the specified primary key"""
@@ -249,4 +249,4 @@ class Art:
         """
 
         row = CURSOR.execute(sql, (id,)).fetchone()
-        return cls.instance_from_db(row) if row else None   
+        return cls.instance_from_db(row) if row else None
