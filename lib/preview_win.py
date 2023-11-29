@@ -11,3 +11,6 @@ def show_preview(path):
     label = Label(root, image=img)
     label.pack()
     root.mainloop()
+    
+path = "lib/gallery_photos/River.jpg"
+show_preview(path)

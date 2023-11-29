@@ -30,8 +30,27 @@ def admin_login(username, password):
 
 
 
-def aquire_art(user, title, artist, price, year_created, preview):
-    user.create_art(title, artist, price, year_created, preview)
+def aquire_art(user):
+    print("-- 0) back --")
+    print("if you screw up inputs it will kick you from the program")
+    print("title must be non empty str")
+    print("artist must be non empty str") 
+    print("year must be int (yyyy)")        
+    print("price must be int or float .00")
+    print("for preview: right click img file in gallery_photos select copy relative path and paste into preview input")        
+    title= input("title: ")
+    artist = input("artist: ")
+    yearS = input("year (yyyy): ")
+    priceS = input("price (0.00): $")
+    year_created = int(yearS)
+    price = int(priceS)
+    preview = input("preview: ")
+    if title == "0" or artist == "0" or yearS == "0" or priceS == "0" or preview =="0":
+        return
+    else:
+        art = user.create_art(title, artist, price, year_created, preview)
+        print("succesfully created:")
+        print(art)
 
 
 def all_customers(user):
@@ -122,32 +141,17 @@ def remove_user(user):
         from cli import main
         main()
 
-def all_art():
+def all_art(user):
     arts = Art.get_all()
-    for art in arts:
-        print(f'{arts.index(art) + 1}) {art}')
+    display_art_list(arts,user)
 
-def all_sold():
+def all_sold(user):
     all_sold =  Art.search_sold()
-    for sold in all_sold:
-        print(f'{all_sold.index(sold) + 1}) {sold}')
+    display_art_list(all_sold,user)
 
 def all_unsold(user):
     all_unsold = Art.search_by("owner", 1)
-    for unsold in all_unsold:
-        print(f'{all_unsold.index(unsold) + 1}) {unsold}')
-    c1=input('> ')
-    choice = int(c1) -1
-    if choice in range(len(all_unsold)):
-        display_art_card(all_unsold[choice])
-    else:
-        from cli import cust_gallery_search, admin_gallery_search
-        os.system('cls' if os.name == 'nt' else 'clear')
-        print('invalid input')
-        if isinstance(user, Customer):
-            cust_gallery_search(user)
-        else:
-            admin_gallery_search(user)
+    display_art_list(all_unsold,user)
 
 def all_artists(user):
     if isinstance(user, Customer):
@@ -299,6 +303,7 @@ def display_art_list(list, user):
         print("-- q) exit ||m) log out || 0) back --")
         if n>0:
             print("!!Invalid choice!!")
+        print("select from list for more info")
         if list != None:
             for art in list:
                 print(f'{list.index(art) + 1}) {art}')
@@ -314,7 +319,7 @@ def display_art_list(list, user):
                 else:
                     admin_gallery_search(user)
             if int(choice) in range(1, len(list)+1):
-                display_art_card(list[int(choice)-1])
+                display_art_card(list[int(choice)-1], user, list)
             else:
                 n+=1
         else:
@@ -326,11 +331,36 @@ def display_art_list(list, user):
             else:
                 admin_gallery_search(user)
 
-def display_art_card(artpiece):
+def display_art_card(artpiece, user, list):
     os.system('cls' if os.name == 'nt' else 'clear')
-    #run gui image here 
-    print(artpiece)
-
+    print(f"{artpiece.title}")
+    print(f"   by {artpiece.artist} -- {artpiece.year} ")
+    print(f"${artpiece.price:,.2f}")
+    if isinstance(user, Customer) and artpiece.owner != user.id:
+        choice = input("purchase (y/n): ")
+        if choice == "y":
+            purchase_art(user, artpiece)
+            display_art_list(list, user)
+    elif isinstance(user, Customer) and artpiece.owner == user.id:
+        choice = input("donate/return art to Gallery (y/n): ")
+        if choice == "y":
+            donate_art(artpiece)
+            display_art_list(list, user)
+    else:
+        print("--- 1) edit price || 2) remove art --- ")
+        choice = input("> ")
+        if choice == "1":
+            price = input("new price: ")
+            edit_price(artpiece, price)
+            display_art_list(list, user)
+        elif choice == "2":
+            rus = input("are you sure, cannot be undone? (y/n):  ")
+            if rus == "y":
+                remove_art(artpiece)
+            display_art_list(list, user)
+        else:
+            display_art_list(list, user)
+    
 #ADMIN ONLY OPTIONS
 def edit_price(artpiece, price):
     artpiece.price = price
@@ -345,10 +375,6 @@ def remove_art(artpiece):
 def purchase_art(customer, artpiece):
     artpiece.owner = customer.id
     artpiece.update()
-
-def sell_art(artpiece):
-    artpiece.price = round(artpiece.price*1.2, 2)
-    donate_art(artpiece)
 
 def donate_art(artpiece):
     artpiece.owner = 1 #customer id of gallery

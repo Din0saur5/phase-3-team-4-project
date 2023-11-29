@@ -181,13 +181,21 @@ def admin_gallery_search(user):
             elif choice == "0":
                 dashboard(user)
             elif choice == "1":
-                user.aquisitions()
+                list= user.aquisitions()
+                display_art_list(list, user)
             elif choice == "2":
-                pass
+                all_art(user)
+                
             elif choice == "3":
-                pass
+                search_as_admin()
+                
+            elif choice == "4":
+                all_artists(user)
+                
+            elif choice == "5":
+                aquire_art(user)
 
-def customer_galleries():
+def customer_galleries(user):
     
     print("Please select an option:")
     print("1. View personal gallery")
@@ -198,14 +206,12 @@ def customer_galleries():
 def admin_galleries():
     
     print("Please select an option:")
-    print("1. View personal gallery")
+    print("1. View personal aqusitions")
     print("2. view complete library")
     print("3. search library by")
+    print("4. list of all artists names")
+    print("5. Add to Gallery")
 
-
-
-def customer_gallery_menu(user):
-    pass
 
 def admin_menu(user):
     

@@ -71,8 +71,8 @@ class Admin:
         return list
 
     def create_art(self, title, artist, price, year_created, preview):
-        Art.create(title,artist, price, year_created, self.id, preview)
-
+        art = Art.create(title,artist, price, year_created, self.id, preview)
+        return art
 
     def save(self):
         """ Insert a new row with the username and password values of the current Admin instance.

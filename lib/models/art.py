@@ -30,9 +30,9 @@ class Art:
     @title.setter
     def title(self, value):
         if not isinstance(value, str) and not hasattr(self, "title"):
-            return print("Title must be a non-empty string")
+            raise Exception("Title must be a non-empty string")
         elif not value:
-            return print("Title cannot be an empty string")
+            raise Exception("Title cannot be an empty string")
         else:
             self._title = value.capitalize()
 
@@ -43,9 +43,9 @@ class Art:
     @artist.setter
     def artist(self, value):
         if not isinstance(value, str) and not hasattr(self, "artist"):
-            return print("Artist must be a non-empty string")
+            raise Exception("Artist must be a non-empty string")
         elif not value:
-            return print("Artist cannot be an empty string")
+            raise Exception("Artist cannot be an empty string")
         else:
             self._artist = value.capitalize()
       
@@ -56,7 +56,7 @@ class Art:
     @price.setter
     def price(self, value):
         if not isinstance(value, (float, int)):
-            return print("Price must be a float or integer")
+            raise Exception("Price must be a float or integer")
         rounded_value = round(value, 2)
         self._price = float(f"{rounded_value:.2f}")       
     
@@ -67,7 +67,7 @@ class Art:
     @year_created.setter
     def year_created(self, value):
         if not isinstance(value, int) and not hasattr(self, "year_created"):
-            return print("Year created must be an integer")
+            raise Exception("Year created must be an integer")
         else:
             self._year_created = value
     
@@ -79,7 +79,7 @@ class Art:
     def admin_acquisition(self, value):
         from models.admins import Admin
         if not isinstance(value, int) and not hasattr(self, "admin_acquisition") and Admin.find_by_id(value):
-            return print("Admin acquisition must be an instance of the Admin class")
+            raise Exception("Admin acquisition must be an instance of the Admin class")
         else:
             self._admin_acquisition = value  
     
