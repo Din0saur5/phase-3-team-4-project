@@ -50,7 +50,7 @@ def aquire_art(user):
     if yearS == "0" or not isinstance(yearS, int): return
 
     priceS = input("price (0.00): $")
-    if priceS == "0" or not isinstance(priceS, int) or not isinstance(ypriceSearS, float): return
+    if priceS == "0" or not isinstance(priceS, int) or not isinstance(yearS, float): return
 
     year_created = int(yearS)
     price = int(priceS)
@@ -352,10 +352,12 @@ def display_art_list(list, user):
                 admin_gallery_search(user)
 
 def display_art_card(artpiece, user, list):
+    from preview_win import show_preview
     os.system('cls' if os.name == 'nt' else 'clear')
     print(f"{artpiece.title}")
     print(f"   by {artpiece.artist} -- {artpiece.year_created} ")
     print(f"${artpiece.price:,.2f}")
+    show_preview(artpiece)
     if isinstance(user, Customer) and artpiece.owner != user.id:
         choice = input("purchase (y/n): ")
         if choice == "y":

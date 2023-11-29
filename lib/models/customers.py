@@ -91,7 +91,7 @@ class Customer:
         """ Initialize a new Customer instance and save the object to the database """
         customer = cls(username, password)
         customer.save()
-        if customer.username or customer.password is None:
+        if customer._username or customer._password is None:
             customer.delete()
             return False
         else:

@@ -29,7 +29,7 @@ def login(choice):
         print("-- q) exit ||m) main menu --")
         print("enter username and password:")  # || 2 to main menu")
         if choice == "1":
-            print("    Remember! username must be between 8 and 25 char and password must be over 8 char and must include a capital letter and a number\n")
+            print("    Remember! username must be between 5 and 15 char and password must be over 8 char and must include a capital letter and a number\n")
         user = input("username: ")
         if user == "q":
             exit_program()
