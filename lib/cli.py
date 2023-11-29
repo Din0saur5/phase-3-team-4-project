@@ -148,7 +148,7 @@ def cust_gallery_search(user):
         if i>0:
             print("!!Invalid choice!!")
         if isinstance(user, Customer):
-            customer_galleries()
+            customer_galleries(user)
             choice = input("> ")
             if choice == "q":
                 exit_program()
@@ -157,7 +157,8 @@ def cust_gallery_search(user):
             elif choice == "0":
                 dashboard(user)
             elif choice == "1":
-                search_by_owner(user)
+                list = search_by_owner(user)
+                display_art_list(list, user)
             elif choice == "2":
                 all_unsold(user)
             elif choice == "3":
@@ -201,9 +202,9 @@ def admin_gallery_search(user):
 def customer_galleries(user):
 
     print("Please select an option:")
-    print("1. View personal gallery")
+    print("1. View Personal Gallery")
     print("2. View Complete Library")
-    print("3. Search library by category")
+    print("3. Search Library by category")
     print("4. View all Artists")
 
 def admin_galleries():
@@ -211,8 +212,8 @@ def admin_galleries():
     print("Please select an option:")
     print("1. View Personal Aqusitions")
     print("2. View Complete Library")
-    print("3. Search Library by Category")
-    print("4. View all Artists")
+    print("3. Search library by Category")
+    print("4. View all Library")
     print("5. Add to Gallery")
 
 

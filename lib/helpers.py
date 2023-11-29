@@ -48,7 +48,7 @@ def aquire_art(user):
 
     yearS = input("year (yyyy): ")
     if yearS == "0" or not isinstance(yearS, int): return
-    
+
     priceS = input("price (0.00): $")
     if priceS == "0" or not isinstance(priceS, int) or not isinstance(ypriceSearS, float): return
 
@@ -172,7 +172,8 @@ def all_artists(user):
         all_art =  Art.search_by("owner", 1)
     else:
         all_art = Art.get_all()
-        all_artists = list({art.artist for art in all_art})
+
+    all_artists = list({art.artist for art in all_art})
     for artist in all_artists:
         print(f"{all_artists.index(artist) +1}) {artist}")
 
@@ -180,7 +181,6 @@ def all_artists(user):
     choice = int(c1)-1
 
     if choice in range(len(all_artists)):
-
         art_list = Art.search_by('artist', all_artists.pop(choice))
         display_art_list(art_list, user)
     else:
@@ -233,6 +233,8 @@ def search_as_admin(user):
     input(">")
 
 def search_as_cust():
+    os.system('cls' if os.name == 'nt' else 'clear')
+    print('Select a Category')
     print('1) Title\n2) Artist\n3) Price Range\n4) Date Range\n5) Specific Date')
     search = input('> ')
 
@@ -270,10 +272,11 @@ def search_as_cust():
 
 
     else:
-        results = ["Invalid choice. Please choose a valid option."]
+        results = "Invalid choice. Please choose a valid option."
 
-
+    os.system('cls' if os.name == 'nt' else 'clear')
     print(results)
+    input(">")
 
 
 
