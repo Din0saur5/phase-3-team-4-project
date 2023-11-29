@@ -25,7 +25,7 @@ class Admin:
         if isinstance(username, str) and len(username) in range(5,16) and ' ' not in username:
             self._username = username
         else:
-            return
+            self._username = None
 
     @property
     def password(self):
@@ -33,10 +33,10 @@ class Admin:
 
     @password.setter
     def password(self, password):
-        if isinstance(password, str) and len(password) > 7 and ' ' not in password and password != password.lower() and any(char.isdigit() for char in password):
+        if isinstance(password, str) and len(password) >= 8 and ' ' not in password and password != password.lower() and any(char.isdigit() for char in password):
             self._password = password
         else:
-            return
+            self._password = None
 
     def delete(self):
         """Delete the table row corresponding to the current admin instance,
@@ -95,7 +95,13 @@ class Admin:
         """ Initialize a new Admin instance and save the object to the database """
         admin = cls(username, password)
         admin.save()
-        return admin
+
+        if admin.username or admin.password is None:
+            admin.delete()
+            return False
+        else:
+            return admin
+
 
     @classmethod
     def instance_from_db(cls, row):
