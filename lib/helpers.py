@@ -303,7 +303,11 @@ def display_art_list(list, user):
                 from cli import main
                 main()
             elif choice == "0":
-                gallery_search(user)
+                if isinstance(user, Admin):
+                    from helpers import all_customers
+                    all_customers(user)
+                else:
+                    gallery_search(user)
             if int(choice) in range(1, len(list)+1):
                 display_art_card(list[int(choice)-1])
             else:
@@ -312,7 +316,11 @@ def display_art_list(list, user):
             print("None press any key to go back to gallery search")
             input('> ')
             os.system('cls' if os.name == 'nt' else 'clear')
-            gallery_search(user)
+
+            if isinstance(user, Admin):
+                all_customers(user)
+            else:
+                gallery_search(user)
 
 def display_art_card(artpiece):
     os.system('cls' if os.name == 'nt' else 'clear')
