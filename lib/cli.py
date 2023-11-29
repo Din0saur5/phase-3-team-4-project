@@ -241,6 +241,8 @@ def register_admin(admin):
     while True:
         os.system('cls' if os.name == 'nt' else 'clear') # clears the terminal
         print("-- q) exit ||m) main menu --")
+        if i>0:
+            print("!!Invalid choice!!")
         print("    Remember! username must be between 8 and 25 characters")
 
         user = input("Admin's Username: ")
