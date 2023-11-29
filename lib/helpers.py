@@ -50,7 +50,7 @@ def aquire_art(user):
     if yearS == "0" or not isinstance(yearS, int): return
     
     priceS = input("price (0.00): $")
-    if priceS == "0" or not isinstance(priceS, int) or not isinstance(ypriceSearS, float): return
+    if priceS == "0" or not isinstance(priceS, int) or not isinstance(yearS, float): return
 
     year_created = int(yearS)
     price = int(priceS)
