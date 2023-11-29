@@ -43,8 +43,9 @@ def all_customers(user):
     choice = int(c1)-1
 
     if choice in range(len(custs)):
-        list = search_by_owner(custs.pop(choice))
-        display_art_list(list, user)
+        pass
+        #list = search_by_owner(custs.pop(choice))
+        #displaye(list, user)
     else:
         os.system('cls' if os.name == 'nt' else 'clear')
         from cli import dashboard
@@ -58,7 +59,8 @@ def all_admins():
         print(f'{admins.index(admin) + 1}) {admin}')
 
 def add_admin(username, password):
-    return Admin.create(username, password)
+    new_admin = Admin.create(username, password)
+    return new_admin
 
 #SEARCH ART +ART LIST FNS USED FOR ADMIN AND/OR CUST INTERFACE --requires differentiation b12 admin or cust
 def change_username(user):

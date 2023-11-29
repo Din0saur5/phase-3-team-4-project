@@ -250,16 +250,21 @@ def register_admin(admin):
             exit_program()
         elif user == "m":
             main()
-        elif user:
+            break
+        elif user != '':
             print("    Remember! password must be over 8 char and must include a capital letter and a number\n")
             password = input("Admin's Password: ")
-            if password:
-                verify = add_admin(user, password)
-        if isinstance(verify, Admin):
-            print("Admin added")
-            dashboard(admin)
+            verify = add_admin(user, password)
+            if isinstance(verify, Admin):
+                print("Admin added")
+                dashboard(admin)
+            else:
+                i+=1
+                continue
         else:
             i+=1
+       
+        
 
 if __name__ == '__main__':
     #welcome print interface code
