@@ -25,7 +25,7 @@ class Admin:
         if isinstance(username, str) and len(username) in range(5,16) and ' ' not in username:
             self._username = username
         else:
-            self._username = None
+            raise Exception("username no good")
 
     @property
     def password(self):
@@ -36,7 +36,7 @@ class Admin:
         if isinstance(password, str) and len(password) >= 8 and ' ' not in password and password != password.lower() and any(char.isdigit() for char in password):
             self._password = password
         else:
-            self._password = None
+            raise Exception("password no good")
 
     def delete(self):
         """Delete the table row corresponding to the current admin instance,

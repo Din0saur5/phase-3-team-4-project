@@ -23,7 +23,7 @@ class Customer:
         if isinstance(username, str) and len(username) in range(5,16) and ' ' not in username:
             self._username = username
         else:
-            self._username = None
+            raise Exception("username no good")
 
 
     @property
@@ -35,7 +35,8 @@ class Customer:
         if isinstance(password, str) and len(password) >= 8 and ' ' not in password and password != password.lower() and any(char.isdigit() for char in password):
             self._password = password
         else:
-            self._username = None
+            raise Exception("password no good")
+            
 
     def delete(self):
         """Delete the table row corresponding to the current customer instance,
@@ -91,11 +92,7 @@ class Customer:
         """ Initialize a new Customer instance and save the object to the database """
         customer = cls(username, password)
         customer.save()
-        if customer._username or customer._password is None:
-            customer.delete()
-            return False
-        else:
-            return customer
+        return customer
 
     @classmethod
     def instance_from_db(cls, row):

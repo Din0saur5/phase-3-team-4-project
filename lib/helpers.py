@@ -291,7 +291,8 @@ def search_by_id(type_class,id):
 #CUSTOMER ONLY INTERFACE FNS
 
 def register_cust(username, password):
-    cust = Customer.create(username, password)
+    Customer.create(username, password)
+    cust = cust_login(username,password)
     return cust
 
 def cust_login(username, password):
@@ -302,7 +303,7 @@ def cust_login(username, password):
         choice = input("y/n: ")
         if choice == "y":
             from cli import login
-            login(1)
+            login("1")
 
         else:
             return False
