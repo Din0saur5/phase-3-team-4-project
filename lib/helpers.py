@@ -31,26 +31,31 @@ def admin_login(username, password):
 
 
 def aquire_art(user):
+    os.system('cls' if os.name == 'nt' else 'clear')
     print("-- 0) back --")
     print("if you screw up inputs it will kick you from the program")
     print("title must be non empty str")
-    print("artist must be non empty str") 
-    print("year must be int (yyyy)")        
+    print("artist must be non empty str")
+    print("year must be int (yyyy)")
     print("price must be int or float .00")
-    print("for preview: right click img file in gallery_photos select copy relative path and paste into preview input")        
+    print("for preview: right click img file in gallery_photos select copy relative path and paste into preview input")
+
     title= input("title: ")
+    if title == "0" : return
     artist = input("artist: ")
+    if artist == "0" : return
     yearS = input("year (yyyy): ")
+    if yearS == "0" : return
     priceS = input("price (0.00): $")
+    if priceS == "0" : return
+
     year_created = int(yearS)
     price = int(priceS)
     preview = input("preview: ")
-    if title == "0" or artist == "0" or yearS == "0" or priceS == "0" or preview =="0":
-        return
-    else:
-        art = user.create_art(title, artist, price, year_created, preview)
-        print("succesfully created:")
-        print(art)
+
+    art = user.create_art(title, artist, price, year_created, preview)
+    print("succesfully created:")
+    print(art)
 
 
 def all_customers(user):
@@ -164,7 +169,7 @@ def all_artists(user):
         all_art =  Art.search_by("owner", 1)
     else:
         all_art = Art.get_all()
-    all_artists = list({art.artist for art in all_art})
+        all_artists = list({art.artist for art in all_art})
     for artist in all_artists:
         print(f"{all_artists.index(artist) +1}) {artist}")
 
@@ -173,27 +178,32 @@ def all_artists(user):
 
     if choice in range(len(all_artists)):
 
-        list = Art.search_by('artist', all_artists.pop(choice))
-        display_art_list(list, user)
+        art_list = Art.search_by('artist', all_artists.pop(choice))
+        display_art_list(art_list, user)
     else:
         os.system('cls' if os.name == 'nt' else 'clear')
 
-def search_as_admin():
+def search_as_admin(user):
+    os.system('cls' if os.name == 'nt' else 'clear')
+    print('Select a Category')
     print('1) Title\n2) Artist\n3) Price Range\n4) Date Range\n5) Specific Date')
     search = input('> ')
-    search = input('> ')
 
-    if search == "1":
+    if search == "q": # trusy dusty close button
+        exit_program()
+    if search == "0": # trusy dusty back button
+        from cli import admin_gallery_search
+        admin_gallery_search(user)
+
+    elif search == "1":
         # Handle title search
         title_query = input("Enter title: ")
         results = Art.search_by('title', title_query)
-
 
     elif search == "2":
         # Handle artist search
         artist_query = input("Enter artist: ")
         results = Art.search_by('artist', artist_query)
-
 
     elif search == "3":
         # Handle price range search
@@ -201,25 +211,23 @@ def search_as_admin():
         max_price = float(input("Enter maximum price: "))
         results = Art.search_range('price', min_price, max_price)
 
-
     elif search == "4":
         # Handle date range search
         start_date = int(input("Enter start year (YYYY): "))
         end_date = int(input("Enter end year (YYYY): "))
         results = Art.search_range('year_created', start_date, end_date)
 
-
     elif search == "5":
         # Handle specific date search
         specific_date = int(input("Enter specific year(YYYY): "))
         results = Art.search_by('year_created', specific_date)
 
-
     else:
-        results = ["Invalid choice. Please choose a valid option."]
+        results = "Invalid choice. Please choose a valid option."
 
-
+    os.system('cls' if os.name == 'nt' else 'clear')
     print(results)
+    input(">")
 
 def search_as_cust():
     print('1) Title\n2) Artist\n3) Price Range\n4) Date Range\n5) Specific Date')
@@ -340,7 +348,7 @@ def display_art_list(list, user):
 def display_art_card(artpiece, user, list):
     os.system('cls' if os.name == 'nt' else 'clear')
     print(f"{artpiece.title}")
-    print(f"   by {artpiece.artist} -- {artpiece.year} ")
+    print(f"   by {artpiece.artist} -- {artpiece.year_created} ")
     print(f"${artpiece.price:,.2f}")
     if isinstance(user, Customer) and artpiece.owner != user.id:
         choice = input("purchase (y/n): ")
@@ -366,7 +374,7 @@ def display_art_card(artpiece, user, list):
             display_art_list(list, user)
         else:
             display_art_list(list, user)
-    
+
 #ADMIN ONLY OPTIONS
 def edit_price(artpiece, price):
     artpiece.price = price
