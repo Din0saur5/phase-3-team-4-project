@@ -205,8 +205,7 @@ def admin_galleries():
 
 
 def customer_gallery_menu(user):
-
- pass
+    pass
 
 def admin_menu(user):
     
@@ -219,8 +218,8 @@ def admin_menu(user):
 
         print("Admin Menu")
         print("1. Account Settings")
-        print("2. Add Admin")
-        print("3. View All Admine")
+        print("2. Add New Admin")
+        print("3. View All Admins")
         choice = input("> ")
         if choice == "q":
             exit_program()
@@ -229,11 +228,34 @@ def admin_menu(user):
         elif choice == "0":
             dashboard(user)
         elif choice == "1":
-            change_username(user)
+            account_settings(user)
         elif choice == "2":
-            change_password(user)
+            register_admin(user)
         elif choice == "3":
-            remove_user(user)
+            all_admins()
+        else:
+            i+=1
+
+def register_admin(admin):
+    i=0
+    while True:
+        os.system('cls' if os.name == 'nt' else 'clear') # clears the terminal
+        print("-- q) exit ||m) main menu --")
+        print("    Remember! username must be between 8 and 25 characters")
+
+        user = input("Admin's Username: ")
+        if user == "q":
+            exit_program()
+        elif user == "m":
+            main()
+        elif user:
+            print("    Remember! password must be over 8 char and must include a capital letter and a number\n")
+            password = input("Admin's Password: ")
+            if password:
+                verify = add_admin(user, password)
+        if isinstance(verify, Admin):
+            print("Admin added")
+            dashboard(admin)
         else:
             i+=1
 
