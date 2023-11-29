@@ -16,7 +16,7 @@ def exit_program():
 
 #ADMIN ONLY INTERFACE FNS
 def admin_login(username, password):
-     #check to see if username is in db
+    #check to see if username is in db
     user = Admin.find_by_username(username)
     if user is None:
             return False

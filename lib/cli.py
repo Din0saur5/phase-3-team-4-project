@@ -107,7 +107,7 @@ def admin_cmd():
 def account_settings( user):
     i = 0
     while True:
-
+        os.system('cls' if os.name == 'nt' else 'clear')
         print("-- q) exit ||m) log out || 0) back --")
         if i>0:
             print("!!Invalid choice!!")
@@ -121,7 +121,10 @@ def account_settings( user):
         elif choice == "m":
             main()
         elif choice == "0":
-            dashboard(user)
+            if isinstance(user, Admin):
+                admin_menu(user)
+            else:
+                dashboard(user)
         elif choice == "1":
             change_username(user)
         elif choice == "2":
@@ -156,7 +159,7 @@ def cust_gallery_search(user):
             elif choice == "1":
                 search_by_owner(user)
             elif choice == "2":
-               all_unsold(user)
+                all_unsold(user)
             elif choice == "3":
                 search_as_cust()
             elif choice == "4":
@@ -240,21 +243,26 @@ def register_admin(admin):
     i=0
     while True:
         os.system('cls' if os.name == 'nt' else 'clear') # clears the terminal
-        print("-- q) exit ||m) main menu --")
+        print("-- q) exit ||0) back --")
         if i>0:
             print("!!Invalid choice!!")
-        print("    Remember! username must be between 8 and 25 characters")
+        print("    Username must be between 8 and 25 characters")
 
         user = input("Admin's Username: ")
         if user == "q":
             exit_program()
-        elif user == "m":
-            main()
+        elif user == "0":
+            admin_menu(admin)
             break
         elif user != '':
-            print("    Remember! password must be over 8 char and must include a capital letter and a number\n")
+            print("    Password must be over 8 character, and include a capital letter, and a number")
             password = input("Admin's Password: ")
-            verify = add_admin(user, password)
+            if password == "q":
+                exit_program()
+            elif password == "0":
+                admin_menu(admin)
+            elif password:
+                verify = add_admin(user, password)
             if isinstance(verify, Admin):
                 print("Admin added")
                 dashboard(admin)
@@ -263,8 +271,6 @@ def register_admin(admin):
                 continue
         else:
             i+=1
-
-
 
 if __name__ == '__main__':
     #welcome print interface code
