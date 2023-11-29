@@ -188,31 +188,31 @@ def admin_gallery_search(user):
                 display_art_list(list, user)
             elif choice == "2":
                 all_art(user)
-                
+
             elif choice == "3":
-                search_as_admin()
-                
+                search_as_admin(user)
+
             elif choice == "4":
                 all_artists(user)
-                
+
             elif choice == "5":
                 aquire_art(user)
 
 def customer_galleries(user):
-    
+
     print("Please select an option:")
     print("1. View personal gallery")
-    print("2. view complete library")
-    print("3. search library by")
-    print("4. list of all artists names")
+    print("2. View Complete Library")
+    print("3. Search library by category")
+    print("4. View all Artists")
 
 def admin_galleries():
 
     print("Please select an option:")
-    print("1. View personal aqusitions")
-    print("2. view complete library")
-    print("3. search library by")
-    print("4. list of all artists names")
+    print("1. View Personal Aqusitions")
+    print("2. View Complete Library")
+    print("3. Search Library by Category")
+    print("4. View all Artists")
     print("5. Add to Gallery")
 
 
@@ -228,7 +228,7 @@ def admin_menu(user):
         print("Admin Menu")
         print("1. Account Settings")
         print("2. Add New Admin")
-        print("3. View All Admins")
+        print("3. View all Admins")
         choice = input("> ")
         if choice == "q":
             exit_program()
