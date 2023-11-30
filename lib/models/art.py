@@ -29,48 +29,56 @@ class Art:
 
     @title.setter
     def title(self, value):
-        if not isinstance(value, str) and not hasattr(self, "title"):
-            raise Exception("Title must be a non-empty string")
-        elif not value:
-            raise Exception("Title cannot be an empty string")
-        else:
-            self._title = value.capitalize()
-
+        try:
+            if not isinstance(value, str) and not hasattr(self, "title"):
+                raise Exception("Title must be a non-empty string")
+            elif not value:
+                raise ValueError("Title cannot be an empty string")
+            else:
+                self._title = value.capitalize()
+        except ValueError as ve:
+            print(f"Setting Error: {ve}")
     @property
     def artist(self):
         return self._artist
 
     @artist.setter
     def artist(self, value):
-        if not isinstance(value, str) and not hasattr(self, "artist"):
-            raise Exception("Artist must be a non-empty string")
-        elif not value:
-            raise Exception("Artist cannot be an empty string")
-        else:
-            self._artist = value.capitalize()
-
+        try:
+            if not isinstance(value, str) and not hasattr(self, "artist"):
+                raise ValueError("Artist must be a non-empty string")
+            elif not value:
+                raise ValueError("Artist cannot be an empty string")
+            else:
+                self._artist = value.capitalize()
+        except ValueError as ve:
+            print(f"Setting Error: {ve}")
     @property
     def price(self):
         return self._price
 
     @price.setter
     def price(self, value):
-        if not isinstance(value, (float, int)):
-            raise Exception("Price must be a float or integer")
-        rounded_value = round(value, 2)
-        self._price = float(f"{rounded_value:.2f}")
-
+        try:
+            if not isinstance(value, (float, int)):
+                raise ValueError("Price must be a float or integer")
+            rounded_value = round(value, 2)
+            self._price = float(f"{rounded_value:.2f}")
+        except ValueError as ve:
+            print(f"Setting Error: {ve}")
     @property
     def year_created(self):
         return self._year_created
 
     @year_created.setter
     def year_created(self, value):
-        if not isinstance(value, int) and not hasattr(self, "year_created"):
-            raise Exception("Year created must be an integer")
-        else:
-            self._year_created = value
-
+        try:
+            if not isinstance(value, int) and not hasattr(self, "year_created"):
+                raise ValueError("Year created must be an integer")
+            else:
+                self._year_created = value
+        except ValueError as ve:
+            print(f"Setting Error: {ve}")
     @property
     def admin_acquisition(self):
         return self._admin_acquisition
@@ -78,22 +86,26 @@ class Art:
     @admin_acquisition.setter
     def admin_acquisition(self, value):
         from models.admins import Admin
-        if not isinstance(value, int) and not hasattr(self, "admin_acquisition") and Admin.find_by_id(value):
-            raise Exception("Admin acquisition must be an instance of the Admin class")
-        else:
-            self._admin_acquisition = value
-
+        try:
+            if not isinstance(value, int) and not hasattr(self, "admin_acquisition") and Admin.find_by_id(value):
+                raise ValueError("Admin acquisition must be an instance of the Admin class")
+            else:
+                self._admin_acquisition = value
+        except ValueError as ve:
+            print(f"Setting Error: {ve}")
     @property
     def owner(self):
         return self._owner
     @owner.setter
     def owner(self, owner):
         from models.customers import Customer
-        if isinstance(owner, (int, None)) and Customer.find_by_id(owner):
-            self._owner = owner
-        else:
-            return('error setting owner')
-
+        try:
+            if isinstance(owner, (int, None)) and Customer.find_by_id(owner):
+                self._owner = owner
+            else:
+                raise ValueError('error setting owner')
+        except ValueError as ve:
+            print(f"Setting Error: {ve}")
 
 
     def delete(self):
