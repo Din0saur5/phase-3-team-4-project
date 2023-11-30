@@ -178,8 +178,11 @@ def all_artists(user):
         print(f"{all_artists.index(artist) +1}) {artist}")
 
     c1 = input("> ")
-    choice = int(c1)-1
-
+    try:
+        choice = int(c1)-1    
+    except ValueError as ve:
+         print(f"invalid value {ve}")
+         
     if choice in range(len(all_artists)):
         art_list = Art.search_by('artist', all_artists.pop(choice))
         display_art_list(art_list, user)
@@ -229,10 +232,10 @@ def search_as_admin(user):
         results = "Invalid choice. Please choose a valid option."
 
     os.system('cls' if os.name == 'nt' else 'clear')
-    print(results)
+    display_art_list(results, user)
     input(">")
 
-def search_as_cust():
+def search_as_cust(user):
     os.system('cls' if os.name == 'nt' else 'clear')
     print('Select a Category')
     print('1) Title\n2) Artist\n3) Price Range\n4) Date Range\n5) Specific Date')
@@ -275,7 +278,7 @@ def search_as_cust():
         results = "Invalid choice. Please choose a valid option."
 
     os.system('cls' if os.name == 'nt' else 'clear')
-    print(results)
+    display_art_list(results, user)
     input(">")
 
 
@@ -368,6 +371,7 @@ def display_art_card(artpiece, user, list):
         choice = input("donate/return art to Gallery (y/n): ")
         if choice == "y":
             donate_art(artpiece)
+            new_list  = [art for art in list if art is not artpiece]
             display_art_list(list, user)
     else:
         print("--- 1) edit price || 2) remove art --- ")

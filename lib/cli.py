@@ -162,7 +162,7 @@ def cust_gallery_search(user):
             elif choice == "2":
                 all_unsold(user)
             elif choice == "3":
-                search_as_cust()
+                search_as_cust(user)
             elif choice == "4":
                 all_artists(user)
             else:

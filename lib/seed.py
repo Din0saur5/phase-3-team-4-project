@@ -44,7 +44,6 @@ def seed_database():
     # Art.create("Hangover Daddy", "Kristin Kossi", 4720.00, 2019, 1, "lib/gallery_photos/Hangover_Daddy.jpg")
     # Art.create("The Big Dipper", "Khodakivskyi Vasyl", 4470.00, 2019, 1, "lib/gallery_photos/The_Big_Dipper.jpg")
     # Art.create("Sound Of Life", "Nick Molloy", 854.49, 2023, 1, "lib/gallery_photos/Sound_of_Life.jpg")
-    # Art.create("Autumn flowers", "Lilia Orlova-Holmes", 2759.89, 2023, 1, "lib/gallery_photos/End_Of_Cont_Art.jpg")
     # Art.create("The End of the Contemporary Art", "Dima Braga", 65000.00, 2016, 1, "lib/gallery_photos/End_Of_Cont_Art.jpg")
     # Art.create("Paris contrasts", "Dennis Kuvayev", 60252.50, 2018, 1, "lib/gallery_photos/Paris_Contrasts.jpg")
     # Art.create("The one raw brown in different earth tones", "Tiny de Bruin", 55897.89, 2021, 1, "lib/gallery_photos/The_One_Raw_Brown.jpg")
