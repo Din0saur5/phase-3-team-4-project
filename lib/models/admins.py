@@ -20,12 +20,17 @@ class Admin:
     def username(self):
         return self._username
 
+    
     @username.setter
     def username(self, username):
-        if isinstance(username, str) and len(username) in range(5,16) and ' ' not in username:
-            self._username = username
-        else:
-            raise Exception("username no good")
+        try:  
+            if isinstance(username, str) and len(username) in range(5,16) and ' ' not in username:
+                self._username = username
+            else:
+                raise ValueError("username no good")
+        except ValueError as ve:
+            print(f"Error setting username: {ve}")
+
 
     @property
     def password(self):
@@ -33,10 +38,13 @@ class Admin:
 
     @password.setter
     def password(self, password):
-        if isinstance(password, str) and len(password) >= 8 and ' ' not in password and password != password.lower() and any(char.isdigit() for char in password):
-            self._password = password
-        else:
-            raise Exception("password no good")
+        try:
+            if isinstance(password, str) and len(password) >= 8 and ' ' not in password and password != password.lower() and any(char.isdigit() for char in password):
+                self._password = password
+            else:
+                raise ValueError("Invalid password")
+        except ValueError as ve:
+            print(f"Error setting password: {ve}")
 
     def delete(self):
         """Delete the table row corresponding to the current admin instance,
